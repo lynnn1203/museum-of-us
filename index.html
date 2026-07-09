@@ -468,25 +468,25 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 
 /* ═══ 場景背景圖（覆蓋於漸層之上；素材缺失時自動回退漸層） ═══ */
 #prologue{
-  background-image:linear-gradient(180deg,rgba(222,214,198,.72),rgba(228,220,203,.82)),url("asset/visual/prologue_01.png");
+  background-image:linear-gradient(180deg,rgba(222,214,198,.72),rgba(228,220,203,.82)),url("asset/visual/01_prologue/prologue_01.png");
   background-size:cover;background-position:center;}
 .inv-card{
-  background-image:linear-gradient(172deg,rgba(248,244,234,.9),rgba(241,235,221,.92)),url("asset/visual/invitation_bg.png")!important;
+  background-image:linear-gradient(172deg,rgba(248,244,234,.9),rgba(241,235,221,.92)),url("asset/visual/02_invitation/invitation_bg.png")!important;
   background-size:cover;background-position:center;}
 #entrance{
-  background-image:url("asset/visual/entrance.jpg");
+  background-image:url("asset/visual/03_entrance/entrance.jpg");
   background-size:cover;background-position:center;}
 .datewall{
-  background-image:linear-gradient(180deg,rgba(237,230,215,.86),rgba(230,222,203,.9)),url("asset/visual/g1_firsts_bg.png")!important;
+  background-image:linear-gradient(180deg,rgba(237,230,215,.86),rgba(230,222,203,.9)),url("asset/visual/05_gallery/g1_firsts_bg.png")!important;
   background-size:cover;background-position:center;}
 .resto-table{
-  background-image:radial-gradient(140% 120% at 50% 0%,rgba(255,248,230,.5),transparent 55%),linear-gradient(175deg,rgba(227,217,197,.82),rgba(216,204,178,.86)),url("asset/visual/g2_corridor_bg.png")!important;
+  background-image:radial-gradient(140% 120% at 50% 0%,rgba(255,248,230,.5),transparent 55%),linear-gradient(175deg,rgba(227,217,197,.82),rgba(216,204,178,.86)),url("asset/visual/05_gallery/g2_corridor_bg.png")!important;
   background-size:cover;background-position:center;}
 .sound-room{
-  background-image:radial-gradient(90% 70% at 50% 8%,rgba(255,246,224,.45),transparent 60%),linear-gradient(180deg,rgba(231,223,206,.82),rgba(221,211,190,.86)),url("asset/visual/g3_soundroom_bg.png")!important;
+  background-image:radial-gradient(90% 70% at 50% 8%,rgba(255,246,224,.45),transparent 60%),linear-gradient(180deg,rgba(231,223,206,.82),rgba(221,211,190,.86)),url("asset/visual/05_gallery/g3_soundroom_bg.png")!important;
   background-size:cover;background-position:center;}
 #shop{
-  background-image:radial-gradient(110% 80% at 50% 0%,rgba(230,220,198,.8),rgba(240,233,216,.9)),url("asset/visual/shop_bg.png");
+  background-image:radial-gradient(110% 80% at 50% 0%,rgba(230,220,198,.8),rgba(240,233,216,.9)),url("asset/visual/06_shop/shop_bg.png");
   background-size:cover;background-position:center;}
 .shop-shelf{
   display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin:46px auto;
@@ -881,7 +881,9 @@ const CONFIG = {
   firstDate: "20210210",                                // Gallery I 謎題答案
   g3Answer: "g3_03",                                    // Gallery III 正確聲音（MOV id）
   g3Choices: ["g3_05","g3_03","g3_09"],                 // 聲音三選一：A / B / C
-  assetBase: { visual:"asset/visual/", g2:"asset/G2/", g3:"asset/G3/" },
+  assetBase: { visual:"asset/visual/", g2:"asset/exhibit_G2/", g3:"asset/G3/" },
+  g3Base: "https://github.com/lynnn1203/museum-of-us/releases/download/assets-v1/",  // G3 影片走 Releases
+  g3Ext: ".MOV",                                        // Releases 上為大寫副檔名
   prologue: [
     {en:"“ True love is like ghosts,\nwhich everyone talks about\nand few have seen. ”",
      zh:"「真愛猶如鬼魅，\n談論者眾，但親見者鮮矣。」"},
@@ -1224,7 +1226,7 @@ const MU = {
     const keys=["A","B","C"];
     keys.forEach((k,i)=>{
       const vid=CONFIG.g3Choices[i];              // g3_05 / g3_03 / g3_09
-      const src=CONFIG.assetBase.g3+vid+".mov";
+      const src=CONFIG.g3Base+vid+CONFIG.g3Ext;   // 例：.../assets-v1/g3_03.MOV
       // 隱藏 audio 元素承載 MOV 原聲
       const au=document.createElement("audio");
       au.id="au_"+k;au.preload="metadata";au.src=src+"#t=0";
@@ -1281,7 +1283,7 @@ const MU = {
     const box=document.getElementById("sculptures");
     box.innerHTML="";
     CONFIG.gallery3.forEach(s=>{
-      const src=CONFIG.assetBase.g3+s.file;
+      const src=CONFIG.g3Base+s.id+CONFIG.g3Ext;   // 例：.../assets-v1/g3_01.MOV
       const d=document.createElement("div");
       d.className="sculpture";
       d.innerHTML=`
