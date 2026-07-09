@@ -397,6 +397,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
   margin-top:16px;text-align:center;letter-spacing:.1em;
   opacity:0;transition:opacity 1200ms ease;}
 .painting.revealed .p-cap{opacity:1;}
+.painting .p-sub{display:block;font-weight:500;color:var(--bronze-deep);letter-spacing:.14em;margin-bottom:5px;}
 /* ═══════════ GALLERY 3 · sound sculpture room ═══════════ */
 #g3gate .scene-inner{max-width:820px;}
 .sound-room{
@@ -464,6 +465,29 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 /* ═══════════ SHOP ═══════════ */
 #shop{background:
   radial-gradient(110% 80% at 50% 0%,#E6DCC6 0%,var(--limestone) 60%);}
+
+/* ═══ 場景背景圖（覆蓋於漸層之上；素材缺失時自動回退漸層） ═══ */
+#prologue{
+  background-image:linear-gradient(180deg,rgba(222,214,198,.72),rgba(228,220,203,.82)),url("asset/visual/prologue_01.png");
+  background-size:cover;background-position:center;}
+.inv-card{
+  background-image:linear-gradient(172deg,rgba(248,244,234,.9),rgba(241,235,221,.92)),url("asset/visual/invitation_bg.png")!important;
+  background-size:cover;background-position:center;}
+#entrance{
+  background-image:url("asset/visual/entrance.jpg");
+  background-size:cover;background-position:center;}
+.datewall{
+  background-image:linear-gradient(180deg,rgba(237,230,215,.86),rgba(230,222,203,.9)),url("asset/visual/g1_firsts_bg.png")!important;
+  background-size:cover;background-position:center;}
+.resto-table{
+  background-image:radial-gradient(140% 120% at 50% 0%,rgba(255,248,230,.5),transparent 55%),linear-gradient(175deg,rgba(227,217,197,.82),rgba(216,204,178,.86)),url("asset/visual/g2_corridor_bg.png")!important;
+  background-size:cover;background-position:center;}
+.sound-room{
+  background-image:radial-gradient(90% 70% at 50% 8%,rgba(255,246,224,.45),transparent 60%),linear-gradient(180deg,rgba(231,223,206,.82),rgba(221,211,190,.86)),url("asset/visual/g3_soundroom_bg.png")!important;
+  background-size:cover;background-position:center;}
+#shop{
+  background-image:radial-gradient(110% 80% at 50% 0%,rgba(230,220,198,.8),rgba(240,233,216,.9)),url("asset/visual/shop_bg.png");
+  background-size:cover;background-position:center;}
 .shop-shelf{
   display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin:46px auto;
 }
@@ -532,7 +556,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 <div class="topbar" id="topbar">
   <span class="brand">Museum of Us</span>
   <span>
-    <button class="btn-quiet" id="btnAssets">素材清單</button>
+    <button class="btn-quiet" id="btnAssets" style="display:none;">素材清單</button>
     <button class="btn-quiet" id="btnMap" style="display:none;">回到平面圖</button>
   </span>
 </div>
@@ -560,10 +584,10 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
       而今日，<br>
       其中一部分將破例開放。
     </p>
-    <p class="inv-visitor-label en">Visitor</p>
+    <p class="inv-visitor-label en">Only Guest</p>
     <p class="inv-visitor en">Piper Kuo</p>
     <div class="btn-row" style="margin-top:44px;">
-      <button class="btn" onclick="MU.go('verify')">應邀前往</button>
+      <button class="btn" onclick="MU.go('verify')">應邀入館</button>
     </div>
   </div>
 </section>
@@ -664,14 +688,14 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
       </g>
     </svg>
   </div>
-  <p class="ent-note">建築場景為示意插畫<br>可替換為 entrance.jpg（16:9 · 2400×1350）</p>
+
   <div class="ent-content">
     <p class="eyebrow" style="color:var(--bronze-deep);">The Museum Opens Its Door</p>
     <h1 class="en">Museum of Us</h1>
     <p class="sub-en">A museum where every ordinary day became something worth keeping.</p>
     <p class="sub-zh">隱身在日常光影中，<br>一座收藏回憶的博物館，緩緩敞開大門。</p>
     <div class="btn-row" style="margin-top:40px;">
-      <button class="btn" onclick="MU.go('map')" style="background:rgba(246,242,232,.55);">進入 · ENTER</button>
+      <button class="btn" onclick="MU.go('map')" style="background:rgba(246,242,232,.55);">步入館中 · ENTER</button>
     </div>
   </div>
 </section>
@@ -819,18 +843,15 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
     <p class="sub-zh" style="margin-top:26px;">
       今日所有展區已參觀完畢，<br>期間限定紀念品商店正式開放。
     </p>
-    <div class="shop-shelf">
-      <div class="shop-item"><div class="si-shape"></div><p>【一番賞 · 賞品 A】<br>型錄素材待補</p></div>
-      <div class="shop-item"><div class="si-shape" style="border-radius:50%;"></div><p>【一番賞 · 賞品 B】<br>型錄素材待補</p></div>
-      <div class="shop-item"><div class="si-shape" style="border-radius:2px;"></div><p>【一番賞 · 賞品 C】<br>型錄素材待補</p></div>
-    </div>
+    <div class="shop-shelf" id="shopShelf"></div>
     <p style="font-weight:300;letter-spacing:.12em;line-height:2.4;">
       請向<b style="color:var(--bronze-deep);">真人館員</b>索取商品型錄，<br>
-      並兌換本次展覽限定紀念品。
+      兌換本次展覽限定紀念品。
     </p>
+    <button class="btn" id="deskBell" onclick="MU.ringBell()" style="margin:8px auto 4px;letter-spacing:.2em;">🛎 呼叫館員 · RING</button>
     <p class="orn">✦ &nbsp; ✦ &nbsp; ✦</p>
     <p class="quote-en">Happy Birthday, dear curator of every ordinary day.</p>
-    <p class="quote-zh" style="font-size:12px;">【待補：給 Piper 的結尾祝福文案】</p>
+    <p class="quote-zh" style="font-size:13px;line-height:2.2;">謝謝你把那些普通的日子，<br>一起過成了值得收藏的展品。</p>
   </div>
 </section>
 
@@ -858,7 +879,9 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 const CONFIG = {
   loverNames: ["侯伶潔","lynn hou","lynn","lynnhou"],  // 身份驗證答案（策展人姓名）
   firstDate: "20210210",                                // Gallery I 謎題答案
-  correctVoice: "B",                                    // Gallery III 正確聲音（A/B/C）
+  g3Answer: "g3_03",                                    // Gallery III 正確聲音（MOV id）
+  g3Choices: ["g3_05","g3_03","g3_09"],                 // 聲音三選一：A / B / C
+  assetBase: { visual:"asset/visual/", g2:"asset/G2/", g3:"asset/G3/" },
   prologue: [
     {en:"“ True love is like ghosts,\nwhich everyone talks about\nand few have seen. ”",
      zh:"「真愛猶如鬼魅，\n談論者眾，但親見者鮮矣。」"},
@@ -868,39 +891,86 @@ const CONFIG = {
     {zh:"然而，當雲從地平線起身，\n葉片長出深綠，\n連空氣也變得炙熱——\n\n一封邀請函，\n從館中寄出。"},
   ],
   gallery1: [
-    {no:"001", date:"20210210", title:"第一次約會",
-     desc:"那天也許不是什麼壯觀的大日子，但博物館認為，它是一切開始的地方。"},
-    {no:"002", date:"【日期待補】", title:"第一次旅行", desc:"【待補：展籤描述，2–3 句，語氣如博物館展籤】"},
-    {no:"003", date:"【日期待補】", title:"第一次說我愛你", desc:"【待補：展籤描述】"},
-    {no:"004", date:"【日期待補】", title:"第一次一起下廚", desc:"【待補：展籤描述】"},
-    {no:"005", date:"【日期待補】", title:"第一次吵架又和好", desc:"【待補：展籤描述】"},
-    {no:"006", date:"【日期待補】", title:"【第一次＿＿＿】", desc:"【待補：展籤描述】"},
+    {no:"001", date:"2020.12.06", title:"第一次一起看表演", desc:"並肩坐在同一段故事裡"},
+    {no:"002", date:"2020.12.31", title:"第一次幫我跑腿", desc:"還沒開始，卻已經靠近"},
+    {no:"003", date:"2021.01.23", title:"第一次一起泡溫泉", desc:"霧氣裡慢慢熟悉彼此"},
+    {no:"004", date:"2021.01.31", title:"第一次看到 Lynn 喝醉", desc:"失控一點，真實一點"},
+    {no:"005", date:"2021.02.01", title:"第一次心動", desc:"心跳比答案更早出現"},
+    {no:"006", date:"2021.02.10", title:"第一次約會", desc:"一切開始的地方"},
+    {no:"007", date:"2021.02.10", title:"第一次牽手", desc:"從那一刻開始同行"},
+    {no:"008", date:"2021.02.10", title:"第一次發現 Piper 怕高", desc:"在高處發現隱藏的一面"},
+    {no:"009", date:"2021.02.14", title:"第一次 Piper 送情人節禮物", desc:"一份貼圖，也能成為情書"},
+    {no:"010", date:"2021.02.16", title:"第一次看烘爐地夜景", desc:"城市亮著，我們也亮著"},
+    {no:"011", date:"2021.02.16", title:"第一次單獨看電影", desc:"黑暗裡，距離變得剛好"},
+    {no:"012", date:"2021.02.27", title:"第一次說出心意", desc:"把藏起來的喜歡說出口"},
+    {no:"013", date:"2021.03.21", title:"第一次一起畫畫", desc:"把想像留在紙上"},
+    {no:"014", date:"2021.03.28", title:"第一次一起去 Gay Bar 跳舞", desc:"在音樂裡放鬆成自己"},
+    {no:"015", date:"2021.04.22", title:"第一次遠距離", desc:"想念開始有了時差"},
+    {no:"016", date:"2021.05.01", title:"第一次一起看日出", desc:"把海風帶進我們的故事"},
+    {no:"017", date:"2021.08.14", title:"第一次一起去遊樂園", desc:"快樂被放大成尖叫聲"},
+    {no:"018", date:"2021.08.14", title:"第一次吵架", desc:"愛也有需要學習的語氣"},
+    {no:"019", date:"2021.10.31", title:"第一次吃醋鬧脾氣", desc:"原來在意也會有形狀"},
+    {no:"020", date:"2021.12.02", title:"第一次一起露營", desc:"把夜晚借給我們收藏"},
+    {no:"021", date:"2022.02.13", title:"第一次一起玩碰碰車", desc:"撞來撞去，還是靠近"},
+    {no:"022", date:"2022.02.28", title:"第一次一起過紀念日", desc:"把普通日子正式命名"},
+    {no:"023", date:"2022.04.10", title:"第一次吃啄木鳥的家", desc:"一頓飯也成了座標"},
+    {no:"024", date:"2022.07.09", title:"第一次買情侶項鍊", desc:"把彼此戴在日常裡"},
+    {no:"025", date:"2022.12.04", title:"第一次收到花", desc:"花開的時候，心也被接住"},
+    {no:"026", date:"2022.12.23", title:"第一次一起看演唱會", desc:"在人群裡共享同一首歌"},
+    {no:"027", date:"2023.03.14", title:"第一次一起參加婚禮", desc:"看見別人的誓言，也想起我們"},
+    {no:"028", date:"2023.06.10", title:"第一次一起去湯姆熊", desc:"把幼稚玩成珍貴"},
+    {no:"029", date:"2024.07.09", title:"第一次一起出國", desc:"從同一個城市，走向更遠的地方"},
+    {no:"030", date:"2026.05.21", title:"第一次跟 Piper 家人出國", desc:"被放進他來的世界裡"},
   ],
   gallery2: [
-    {file:"g2-01.jpg", cap:"【待補：作品說明 01】"},
-    {file:"g2-02.jpg", cap:"【待補：作品說明 02】"},
-    {file:"g2-03.jpg", cap:"【待補：作品說明 03】"},
-    {file:"g2-04.jpg", cap:"【待補：作品說明 04】"},
-    {file:"g2-05.jpg", cap:"【待補：作品說明 05】"},
-    {file:"g2-06.jpg", cap:"【待補：作品說明 06】"},
+    {file:"g2_01.jpg", no:"01", sub:"第一次", cap:"那天的笑聲沒有被鏡頭完整收下，只留下光線與一點晃動。"},
+    {file:"g2_02.jpg", no:"02", sub:"初戀..嗎？", cap:"一張看似普通的照片，在多年後成為我們曾經一起在場的證明。"},
+    {file:"g2_03.jpg", no:"03", sub:"被允許療癒", cap:"不知所云的片刻，往往最像我們。"},
+    {file:"g2_04.jpg", no:"04", sub:"偷偷的", cap:"這一格畫面沒有答案，只有當時的天氣、表情與彼此。"},
+    {file:"g2_05.jpg", no:"05", sub:"被遺忘的夜景", cap:"某些快門不是為了記錄事件，而是為了證明快樂曾經來過。"},
+    {file:"g2_06.jpg", no:"06", sub:"空間入侵", cap:"當時沒有覺得特別，後來才知道，那就是日常最珍貴的樣子。"},
+    {file:"g2_07.jpg", no:"07", sub:"有心最重要", cap:""},
+    {file:"g2_08.jpg", no:"08", sub:"做自己", cap:""},
+    {file:"g2_09.jpg", no:"09", sub:"原來如此", cap:""},
+    {file:"g2_10.jpg", no:"10", sub:"眼光很好", cap:""},
+    {file:"g2_11.jpg", no:"11", sub:"不要生氣", cap:""},
+    {file:"g2_12.jpg", no:"12", sub:"愛的語言", cap:""},
+    {file:"g2_13.jpg", no:"13", sub:"日出", cap:""},
+    {file:"g2_14.jpg", no:"14", sub:"愛不釋手", cap:""},
+    {file:"g2_15.jpg", no:"15", sub:"招牌表情", cap:""},
   ],
   gallery3: [
-    {file:"g3-01.mp3", title:"【聲音展品 01】", desc:"【待補：這段聲音的故事——之後可換 mp3 或影片】"},
-    {file:"g3-02.mp3", title:"【聲音展品 02】", desc:"【待補：這段聲音的故事】"},
-    {file:"g3-03.mp3", title:"【聲音展品 03】", desc:"【待補：這段聲音的故事】"},
-    {file:"g3-04.mp3", title:"【聲音展品 04】", desc:"【待補：這段聲音的故事】"},
+    {file:"g3_01.mov", id:"g3_01", no:"01", title:"曖昧不自知", desc:"雨聲底下的一句話，比當時的天氣更清楚地被保存。"},
+    {file:"g3_02.mov", id:"g3_02", no:"02", title:"偽裝時期", desc:"一段很短的笑聲，足以讓整個房間重新亮起。"},
+    {file:"g3_03.mov", id:"g3_03", no:"03", title:"雨下整夜", desc:"背景很吵，但那個聲音仍然準確地穿過時間。"},
+    {file:"g3_04.mov", id:"g3_04", no:"04", title:"我好看嗎", desc:"有些聲音不需要被翻譯，一響起就知道是誰。"},
+    {file:"g3_05.mov", id:"g3_05", no:"05", title:"專屬外送", desc:""},
+    {file:"g3_06.mov", id:"g3_06", no:"06", title:"學會可愛", desc:""},
+    {file:"g3_07.mov", id:"g3_07", no:"07", title:"你好奇怪", desc:""},
+    {file:"g3_08.mov", id:"g3_08", no:"08", title:"一隻小小鳥", desc:""},
+    {file:"g3_09.mov", id:"g3_09", no:"09", title:"發現是愛", desc:""},
+    {file:"g3_10.mov", id:"g3_10", no:"10", title:"星空舞動", desc:""},
+    {file:"g3_11.mov", id:"g3_11", no:"11", title:"日常光景", desc:""},
   ],
   rooms: {
-    1:{num:"Gallery I", name:"Firsts", zh:"初 次", desc:"這裡記錄了重要的第一次所發生的日子。"},
-    2:{num:"Gallery II", name:"Fragments", zh:"碎 片", desc:"這裡記錄了那些歡樂、甜蜜、甚至有時不知所云的畫面。"},
-    3:{num:"Gallery III", name:"Echoes", zh:"回 聲", desc:"這裡所記錄的聲音，將喚起被深藏的記憶。"},
-    shop:{num:"Souvenir", name:"Shop", zh:"紀念品商店", desc:"完整參觀完每個展區，方能進入期間限定紀念品商店。"},
+    1:{num:"Gallery I", name:"Firsts", zh:"初 次", desc:"這裡收藏著那些一切開始的日子。"},
+    2:{num:"Gallery II", name:"Fragments", zh:"碎 片", desc:"那些散落的片刻，在這裡重新成形。"},
+    3:{num:"Gallery III", name:"Echoes", zh:"回 聲", desc:"有時，聲音比影像更晚褪色。"},
+    shop:{num:"Souvenir", name:"Shop", zh:"紀念品商店", desc:"參觀所有展區後，紀念品商店將為你開放。"},
   },
   stamps:{
     1:{word:"ARCHIVED", sub:"Gallery I", cap:"館藏已建檔。\n有些開始，值得被永久收藏。"},
     2:{word:"RESTORED", sub:"Gallery II", cap:"Collection Restored. 館藏修復完成。\n有些回憶，只有重新拼起來，\n才發現從來沒有真正遺失。"},
     3:{word:"ARCHIVED", sub:"Gallery III", cap:"聲音已歸檔。\n有些記憶，並不留下影像，只留下聲音。"},
   },
+  shopItems: [
+    {name:"《第一次見面場景微縮模型》", price:"200%的愛", desc:"據說購買後，將情不自禁演繹模型中的情境。"},
+    {name:"《已讀不回修復貼布》", price:"NT$ 1999", desc:"適用於對話中出現短暫靜默、誤會、腦補與深夜胡思亂想。"},
+    {name:"《不要再買了符咒》", price:"已售罄", desc:"用於對方被購物狂附身、難以清醒之時，有中等機率發生鬧脾氣減益效果。"},
+    {name:"《一百個親親》", price:"充滿期待的可愛雙眼", desc:"建議定期購買，長期使用超過三個月可有效改善身心健康。"},
+    {name:"《自動和好券》", price:"NT$ 99999", desc:"傳說中的夢幻逸品。"},
+  ],
+  shopQuote: "Happy Birthday, Piper.\n謝謝你把那些普通的日子，一起過成了值得收藏的展品。",
 };
 
 /* ═══ 狀態：展區依序解鎖 ═══ */
@@ -1036,12 +1106,13 @@ const MU = {
       hint.textContent="✦ 展區已解鎖";hint.classList.add("show");
       setTimeout(()=>this.go("g1"),1300);
     }else{
-      hint.textContent="這一天似乎不太對——提示：那是一個冬天。";
+      hint.textContent="這一天似乎不太對——再回到那個冬天想想。";
       hint.classList.add("show");
     }
   },
   buildG1(){
     const wall=document.getElementById("datewall");
+    wall.innerHTML="";
     CONFIG.gallery1.forEach(ex=>{
       const f=document.createElement("div");
       f.className="dframe";
@@ -1069,7 +1140,10 @@ const MU = {
     "polygon(4% 6%,100% 0,96% 90%,0 100%)",
   ],
   buildFragments(){
-    const url=this.makePlaceholderImage();
+    // 隨機自 G2 15 張抽一張作為拼圖主圖
+    const pool=CONFIG.gallery2.map(p=>CONFIG.assetBase.g2+p.file);
+    const pick=pool[Math.floor(Math.random()*pool.length)];
+    this.frag.puzzle=pick;
     const box=document.getElementById("fragments");
     box.innerHTML="";box.classList.remove("solved");
     let order=[0,1,2,3,4,5];
@@ -1078,7 +1152,7 @@ const MU = {
     order.forEach((pieceIdx,pos)=>{
       const t=document.createElement("div");
       t.className="frag";
-      t.style.backgroundImage=`url(${url})`;
+      t.style.backgroundImage=`url(${pick})`;
       const r=Math.floor(pieceIdx/3),c=pieceIdx%3;
       t.style.backgroundPosition=`${c*50}% ${r*100}%`;
       t.style.clipPath=this.fragClips[pos];
@@ -1105,42 +1179,27 @@ const MU = {
       setTimeout(()=>this.go("g2"),3200);
     }
   },
-  makePlaceholderImage(){
-    const cv=document.createElement("canvas");cv.width=720;cv.height=480;
-    const x=cv.getContext("2d");
-    if(!x)return "";
-    const g=x.createLinearGradient(0,0,720,480);
-    g.addColorStop(0,"#EDE4D2");g.addColorStop(.5,"#C9BBA6");g.addColorStop(1,"#A9B7C0");
-    x.fillStyle=g;x.fillRect(0,0,720,480);
-    x.fillStyle="rgba(140,115,85,.85)";
-    x.beginPath();x.arc(360,200,105,0,7);x.fill();
-    x.fillStyle="#F6F2E8";
-    x.font="500 30px 'Noto Serif TC',serif";x.textAlign="center";
-    x.fillText("拼圖照片待補",360,210);
-    x.font="300 18px 'Noto Serif TC',serif";
-    x.fillStyle="rgba(61,56,48,.75)";
-    x.fillText("建議橫式 3:2 · 1200×800 · 檔名 puzzle.jpg",360,430);
-    return cv.toDataURL();
-  },
   buildG2(){
     const cor=document.getElementById("corridor");
-    CONFIG.gallery2.forEach((p,i)=>{
+    cor.innerHTML="";
+    CONFIG.gallery2.forEach(p=>{
+      const src=CONFIG.assetBase.g2+p.file;
       const d=document.createElement("div");
       d.className="painting";
+      const capHtml=p.cap
+        ? `<span class="p-sub">No.${p.no}${p.sub?` · ${p.sub}`:""}</span>${p.cap}`
+        : `<span class="p-sub">No.${p.no}${p.sub?` · ${p.sub}`:""}</span>`;
       d.innerHTML=`
-        <div class="canvas"><div style="text-align:center;color:var(--ink-soft);">
-          <div style="font-size:22px;opacity:.7;">📷</div>
-          <div style="font-size:13px;letter-spacing:.1em;margin-top:6px;">畫作 ${String(i+1).padStart(2,"0")}</div>
-          <div style="font-size:10.5px;font-weight:300;margin-top:4px;">4:3 照片 · 檔名 ${p.file}</div>
-        </div></div>
-        <p class="p-cap">${p.cap}</p>`;
+        <div class="canvas" style="background-image:url('${src}');background-size:cover;background-position:center;"></div>
+        <p class="p-cap">${capHtml}</p>`;
       d.onclick=()=>d.classList.toggle("revealed");
       cor.appendChild(d);
     });
   },
 
-  /* ── Gallery III：聲音雕塑室 ── */
+  /* ── Gallery III：聲音雕塑室（MOV 三選一） ── */
   heard:{A:false,B:false,C:false},
+  audioEls:{},
   sculptSvgs:{
     A:`<svg width="90" height="120" viewBox="0 0 90 120">
         <ellipse class="halo" cx="45" cy="60" rx="44" ry="56" fill="#FFEEC2" opacity=".55"/>
@@ -1161,17 +1220,28 @@ const MU = {
   },
   buildSoundRoom(){
     const box=document.getElementById("soundObjects");
-    ["A","B","C"].forEach(k=>{
+    box.innerHTML="";
+    const keys=["A","B","C"];
+    keys.forEach((k,i)=>{
+      const vid=CONFIG.g3Choices[i];              // g3_05 / g3_03 / g3_09
+      const src=CONFIG.assetBase.g3+vid+".mov";
+      // 隱藏 audio 元素承載 MOV 原聲
+      const au=document.createElement("audio");
+      au.id="au_"+k;au.preload="metadata";au.src=src+"#t=0";
+      box.appendChild(au);
+      this.audioEls[k]=au;
       const d=document.createElement("div");
       d.className="sobj";d.id="sobj"+k;
+      d.dataset.vid=vid;
       d.innerHTML=this.sculptSvgs[k]+
         `<p class="s-name">Echo ${k}</p>
-         <p class="s-note">音檔待補 · voice-${k.toLowerCase()}.mp3</p>`;
+         <p class="s-note">點擊聆聽</p>`;
       d.onclick=()=>MU.playSculpt(k,d);
       box.appendChild(d);
     });
     const cb=document.getElementById("chooseBtns");
-    ["A","B","C"].forEach(k=>{
+    cb.innerHTML="";
+    keys.forEach(k=>{
       const b=document.createElement("button");
       b.className="btn";b.style.padding="12px 24px";b.style.margin="0 8px 12px";
       b.style.letterSpacing=".2em";b.textContent="Echo "+k;
@@ -1181,20 +1251,27 @@ const MU = {
   },
   playSculpt(k,el){
     if(state.solved[3])return;
+    // 停掉其他音檔
+    Object.values(this.audioEls).forEach(a=>{a.pause();});
     document.querySelectorAll(".sobj").forEach(o=>o.classList.remove("playing"));
     el.classList.add("playing");
     el.classList.add("heard");
     this.heard[k]=true;
+    const au=this.audioEls[k];
+    if(au){ try{au.currentTime=0;au.play().catch(()=>{});}catch(e){} }
     const h=document.getElementById("g3Hint");
-    h.textContent=`▸ Echo ${k} 正在低聲迴響……（🔊 音檔待補）`;
+    h.textContent=`▸ Echo ${k} 正在低聲迴響……`;
     h.classList.add("show");
     if(this.heard.A&&this.heard.B&&this.heard.C)
       document.getElementById("chooseRow").classList.add("show");
   },
   voicePick(k){
     const h=document.getElementById("g3Hint");
-    if(k===CONFIG.correctVoice){
+    const el=document.getElementById("sobj"+k);
+    const vid=el?el.dataset.vid:null;
+    if(vid===CONFIG.g3Answer){
       state.solved[3]=true;
+      Object.values(this.audioEls).forEach(a=>a.pause());
       h.textContent="✦ 沒錯——就是這個聲音。展區已解鎖。";
       document.querySelectorAll(".sobj").forEach(o=>o.classList.remove("playing"));
       setTimeout(()=>this.go("g3"),1600);
@@ -1202,21 +1279,23 @@ const MU = {
   },
   buildG3(){
     const box=document.getElementById("sculptures");
+    box.innerHTML="";
     CONFIG.gallery3.forEach(s=>{
+      const src=CONFIG.assetBase.g3+s.file;
       const d=document.createElement("div");
       d.className="sculpture";
       d.innerHTML=`
         <div class="s-shape">🔊</div>
-        <p style="font-weight:500;letter-spacing:.08em;">${s.title}</p>
-        <p style="font-size:11.5px;font-weight:300;color:var(--ink-soft);margin-top:8px;">音檔待補 · ${s.file}</p>`;
+        <p style="font-weight:500;letter-spacing:.08em;">No.${s.no} · ${s.title}</p>`;
       d.onclick=()=>{
         document.querySelectorAll(".sculpture").forEach(el=>el.classList.remove("playing"));
         d.classList.add("playing");
         MU.openModal(`
-          <p class="eyebrow" style="margin-bottom:14px;">Sound Exhibit</p>
+          <p class="eyebrow" style="margin-bottom:14px;">Sound Exhibit · No.${s.no}</p>
           <h2 style="font-size:24px;letter-spacing:.08em;">${s.title}</h2>
-          <p style="font-size:13px;color:var(--bronze);margin-top:10px;">🔊 播放中（音檔待補：${s.file}）</p>
-          <p style="font-weight:300;font-size:14px;margin-top:20px;line-height:2.3;">${s.desc}</p>`);
+          <video src="${src}" controls autoplay playsinline
+            style="width:100%;margin-top:18px;border-radius:8px;background:#000;"></video>
+          ${s.desc?`<p style="font-weight:300;font-size:14px;margin-top:20px;line-height:2.3;">${s.desc}</p>`:""}`);
       };
       box.appendChild(d);
     });
@@ -1242,17 +1321,15 @@ const MU = {
       <p class="eyebrow" style="margin-bottom:18px;">Asset Checklist</p>
       <h2 style="font-size:22px;letter-spacing:.1em;">素材清單</h2>
       <ul class="asset-list" style="margin-top:24px;">
-        <li><b>🎵 bgm.mp3</b> · 背景音樂（鋼琴、慢板、懷舊）</li>
-        <li><b>🧱 texture_limestone.jpg</b> · 石灰牆質感（可疊加於背景）</li>
-        <li><b>📷 entrance.jpg</b> · 入口主視覺 · 16:9 · 2400×1350（現為示意插畫）</li>
-        <li><b>🗺️ museum_model.png / .svg</b> · 建築剖面等角插畫地圖（現為示意插畫）</li>
-        <li><b>📷 puzzle.jpg</b> · 修復桌拼圖照片 · 3:2 · 1200×800</li>
-        <li><b>📷 g2-01～06.jpg</b> · 長廊畫作照片 ×6 · 4:3</li>
-        <li><b>🔊 voice-a/b/c.mp3</b> · 聲音雕塑錄音 ×3（其中一段是愛人的聲音；可換影片原聲）</li>
-        <li><b>🔊 g3-01～04.mp3 或影片</b> · 聲音展品 ×4</li>
-        <li><b>🎁 shop.jpg</b> · 商店場景 · 4:3</li>
-        <li><b>🎁 一番賞商品型錄素材</b> · 賞品圖 ×N（低飽和、展品型錄感）</li>
-        <li><b>✏️ 文案</b> · 六段展籤（日期＋描述）、六段畫作說明、四段聲音故事、結尾祝福</li>
+        <li><b>📷 asset/visual/prologue_01.png</b> · Prologue 背景</li>
+        <li><b>📷 asset/visual/invitation_bg.png</b> · 邀請函背景</li>
+        <li><b>📷 asset/visual/entrance.jpg</b> · 入口主視覺 · 16:9 · 2400×1350</li>
+        <li><b>📷 asset/visual/g1_firsts_bg.png</b> · Gallery I 背景</li>
+        <li><b>📷 asset/visual/g2_corridor_bg.png</b> · Gallery II 背景</li>
+        <li><b>📷 asset/visual/g3_soundroom_bg.png</b> · Gallery III 背景</li>
+        <li><b>📷 asset/visual/shop_bg.png</b> · 商店背景</li>
+        <li><b>📷 asset/G2/g2_01.jpg … g2_15.jpg</b> · 長廊畫作 ×15（也作拼圖抽圖）</li>
+        <li><b>🎞 asset/G3/g3_01.mov … g3_11.mov</b> · 聲音展品 ×11（謎題三選一：g3_05 / g3_03 / g3_09，正解 g3_03）</li>
       </ul>
       <p style="font-size:12px;font-weight:300;color:var(--ink-soft);margin-top:18px;">
         所有答案與文字集中在程式碼最上方的 CONFIG 區，素材照上列命名即可替換。</p>`);
@@ -1394,8 +1471,44 @@ const MU = {
     setTimeout(step,700);
   },
 
+  buildShop(){
+    const shelf=document.getElementById("shopShelf");
+    if(!shelf)return;
+    shelf.innerHTML="";
+    const shapes=["","border-radius:50%;","border-radius:2px;","","transform:rotate(45deg);"];
+    CONFIG.shopItems.forEach((it,i)=>{
+      const d=document.createElement("div");
+      d.className="shop-item";
+      d.innerHTML=`<div class="si-shape" style="${shapes[i%shapes.length]}"></div>
+        <p><b style="color:var(--bronze-deep);">${it.name}</b></p>`;
+      d.onclick=()=>MU.openModal(`
+        <p class="eyebrow" style="margin-bottom:14px;">Souvenir · No.${String(i+1).padStart(2,"0")}</p>
+        <h2 style="font-size:20px;letter-spacing:.06em;line-height:1.7;">${it.name}</h2>
+        <p style="font-size:13px;color:var(--bronze);margin-top:12px;letter-spacing:.1em;">售價：${it.price}</p>
+        <div style="width:40px;height:1px;background:var(--bronze);margin:20px auto;"></div>
+        <p style="font-weight:300;font-size:14px;line-height:2.3;letter-spacing:.06em;">${it.desc}</p>`);
+      shelf.appendChild(d);
+    });
+  },
+  ringBell(){
+    try{
+      const ctx=new (window.AudioContext||window.webkitAudioContext)();
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type="sine";o.frequency.value=1568;
+      o.connect(g);g.connect(ctx.destination);
+      g.gain.setValueAtTime(0.25,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+1.1);
+      o.start();o.stop(ctx.currentTime+1.1);
+    }catch(e){}
+    this.openModal(`
+      <p class="eyebrow" style="margin-bottom:14px;">Front Desk</p>
+      <p style="font-weight:300;font-size:15px;line-height:2.4;letter-spacing:.08em;">
+        🛎 呼叫真人館員中……<br><br>
+        請向真人館員索取商品型錄，<br>兌換本次展覽限定紀念品。</p>`);
+  },
+
   init(){
-    this.buildG1();this.buildG2();this.buildG3();
+    this.buildG1();this.buildG2();this.buildG3();this.buildShop();
     this.buildFragments();this.buildSoundRoom();this.initDust();
     this.renderPrologue();
     document.getElementById("proNext").onclick=()=>this.proNext();
