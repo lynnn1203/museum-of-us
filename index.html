@@ -8,6 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+TC:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="asset/visual/01_prologue/prologue_01.png">
 <link rel="preload" as="image" href="asset/visual/01_prologue/prologue_02.png">
+<link rel="preload" as="image" href="asset/visual/01_prologue/prologue_03.png">
+<link rel="preload" as="image" href="asset/visual/01_prologue/prologue_04.png">
+<link rel="preload" as="image" href="asset/visual/01_prologue/prologue_05.png">
 <link rel="preload" as="image" href="asset/visual/03_entrance/entrance.jpg">
 <link rel="preload" as="image" href="asset/visual/05_gallery/g1_firsts_bg.png">
 <style>
@@ -217,8 +220,10 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 .pro-bg-layer{
   position:absolute;inset:0;z-index:0;
   background-size:cover;background-position:center;
+  background-color:#DED6C6;
   opacity:0;transition:opacity 1500ms ease;
   will-change:opacity;
+  transform:translateZ(0);backface-visibility:hidden;contain:paint;
 }
 .pro-bg-layer.visible{opacity:1;}
 .pro-frame{
@@ -543,17 +548,23 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 /* ═══════════ GALLERY 3 · sound sculpture room ═══════════ */
 #g3gate .scene-inner{max-width:820px;}
 #g3gate h2,#g3gate .quote-en,#g3gate .quote-zh{display:none;}
+#g3gate{padding:0;overflow:hidden;}
+#g3gate .scene-inner{
+  height:100vh;max-height:100dvh;display:flex;flex-direction:column;
+  justify-content:center;gap:12px;padding:6vh 4vw;box-sizing:border-box;
+}
 .sound-room{
-  margin-top:18px;padding:38px 30px 34px;
+  margin-top:8px;padding:24px 24px 22px;
   background:
     radial-gradient(90% 70% at 50% 8%,rgba(255,246,224,.5) 0%,transparent 60%),
     linear-gradient(180deg,#E7DFCE 0%,#DDD3BE 100%);
   border:1px solid #D5CAB2;
 }
-.sound-objects{display:flex;justify-content:center;align-items:flex-end;gap:7%;flex-wrap:wrap;}
-.sobj{cursor:pointer;text-align:center;position:relative;padding:10px;transition:transform 900ms ease;}
+.sound-room .r-text{margin-top:0!important;margin-bottom:24px!important;line-height:2;}
+.sound-objects{display:flex;justify-content:center;align-items:flex-end;gap:min(7%,42px);flex-wrap:nowrap;}
+.sobj{cursor:pointer;text-align:center;position:relative;padding:6px;transition:transform 900ms ease;}
 .sobj:hover{transform:translateY(-4px);}
-.sobj svg{display:block;margin:0 auto;overflow:visible;}
+.sobj svg{display:block;margin:0 auto;overflow:visible;width:clamp(72px,10vw,96px);height:auto;}
 .sobj .halo{opacity:0;transition:opacity 1200ms ease;}
 .sobj.playing .halo{opacity:1;}
 .sobj.playing .body{animation:breathe 1800ms ease-in-out infinite;transform-origin:center 80%;}
@@ -563,7 +574,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 .sobj .s-note{font-size:10.5px;font-weight:300;color:var(--ink-soft);
   letter-spacing:.1em;margin-top:6px;min-height:18px;}
 .sobj.heard .s-note::after{content:"· 已聆聽";color:var(--sage);}
-.choose-row{margin-top:44px;opacity:0;transition:opacity 1100ms ease;pointer-events:none;}
+.choose-row{margin-top:24px;opacity:0;transition:opacity 1100ms ease;pointer-events:none;}
 .choose-row.show{opacity:1;pointer-events:auto;}
 #g3 .scene-inner{max-width:1180px;}
 #g3 h2{display:none;}
@@ -636,7 +647,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 
 /* ═══ 場景背景圖（覆蓋於漸層之上；素材缺失時自動回退漸層） ═══ */
 #prologue{
-  background-image:linear-gradient(180deg,rgba(222,214,198,.2),rgba(228,220,203,.26)),url("asset/visual/01_prologue/prologue_01.png");
+  background-image:linear-gradient(180deg,rgba(222,214,198,.2),rgba(228,220,203,.26));
   background-size:cover;background-position:center;}
 .inv-card{
   background-image:linear-gradient(172deg,rgba(248,244,234,.68),rgba(241,235,221,.72)),url("asset/visual/02_invitation/invitation_bg.png")!important;
@@ -675,7 +686,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(30px,4
 .shop-item p{display:none;}
 #shop .scene-inner{max-width:1180px!important;}
 #shop .shop-copy{position:relative;z-index:2;display:inline-block;margin:0 auto 4px;}
-.shop-bell::before{content:"\1F6CE";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:17px;}
+.shop-copy.text-veil{background:transparent!important;box-shadow:none!important;text-shadow:0 1px 8px rgba(246,242,232,.75);}
 #g3,#g3gate{
   background-size:cover;background-repeat:no-repeat;background-position:center;background-color:#E6DCC6;
 }
@@ -1302,7 +1313,7 @@ const CONFIG = {
   },
   shopItems: [
     {name:"《第一次見面場景微縮模型》", price:"200%的愛", desc:"據說購買後，將情不自禁演繹模型中的情境。"},
-    {name:"《已讀不回修復貼布》", price:"NT$ 1999", desc:"適用於對話中出現短暫靜默、誤會、腦補與深夜胡思亂想。"},
+    {name:"《自動和好券》", price:"NT$ 1999", desc:"適用於對話中出現短暫靜默、誤會、腦補與深夜胡思亂想。"},
     {name:"《不要再買了符咒》", price:"已售罄", desc:"用於對方被購物狂附身、難以清醒之時，有中等機率發生鬧脾氣減益效果。"},
     {name:"《一百個親親》", price:"充滿期待的可愛雙眼", desc:"建議定期購買，長期使用超過三個月可有效改善身心健康。"},
     {name:"《自動和好券》", price:"NT$ 99999", desc:"傳說中的夢幻逸品。"},
@@ -1318,7 +1329,7 @@ const MU = {
   current:"prologue",
   history:[],
   sound:{
-    ctx:null,master:null,ambient:null,ambientGain:null,noiseBuffer:null,bgMusic:null,
+    ctx:null,master:null,ambient:null,ambientGain:null,noiseBuffer:null,bgMusic:null,bgDuckTimer:null,
     unlocked:false,muted:localStorage.getItem("museum-sound-muted")==="1",
     supported:!!(window.AudioContext||window.webkitAudioContext),
     init(){
@@ -1350,7 +1361,7 @@ const MU = {
         this.bgMusic=new Audio("asset/bg_music.mp3");
         this.bgMusic.loop=true;
         this.bgMusic.preload="auto";
-        this.bgMusic.volume=.28;
+        this.bgMusic.volume=.08;
       }
       this.bgMusic.muted=this.muted;
       if(!this.muted)this.bgMusic.play().catch(()=>{});
@@ -1428,6 +1439,12 @@ const MU = {
       if(!this.ambientGain||this.muted)return;
       this.ramp(this.ambientGain.gain,on ? .004 : .018,.45);
     },
+    duckBgMusic(){
+      if(!this.bgMusic||this.muted)return;
+      this.bgMusic.volume=.025;
+      clearTimeout(this.bgDuckTimer);
+      this.bgDuckTimer=setTimeout(()=>{if(this.bgMusic&&!this.muted)this.bgMusic.volume=.08;},650);
+    },
     ramp(param,value,time=.12){
       if(!this.ctx||!param)return;
       const now=this.ctx.currentTime;
@@ -1469,6 +1486,7 @@ const MU = {
     },
     play(name){
       if(!this.supported||this.muted)return;
+      this.duckBgMusic();
       const fx={
         click:()=>this.tone(520,.055,"sine",.022),
         prologue:()=>{this.tone(360,.08,"triangle",.026);this.tone(540,.1,"sine",.018,.045);},
@@ -1533,6 +1551,8 @@ const MU = {
   /* ── Prologue 分鏡 ── */
   proIdx:0,
   proBgActive:"A",
+  proRenderToken:0,
+  proImgCache:{},
   lineify(text){
     return text.split("\n").map((line,i)=>{
       const delay=180+i*130;
@@ -1541,7 +1561,24 @@ const MU = {
         : `<span class="line" style="height:1em;transition-delay:${delay}ms"></span>`;
     }).join("");
   },
-  renderPrologue(){
+  preloadPrologueImages(){
+    CONFIG.prologueImgs.forEach(src=>this.ensurePrologueImage(src));
+  },
+  ensurePrologueImage(src){
+    if(this.proImgCache[src])return this.proImgCache[src];
+    this.proImgCache[src]=new Promise(resolve=>{
+      const img=new Image();
+      img.onload=()=>{
+        if(img.decode) img.decode().then(resolve).catch(resolve);
+        else resolve();
+      };
+      img.onerror=resolve;
+      img.src=src;
+    });
+    return this.proImgCache[src];
+  },
+  async renderPrologue(){
+    const token=++this.proRenderToken;
     const f=CONFIG.prologue[this.proIdx];
     const frame=document.getElementById("proFrame");
     const btn=document.querySelector(".pro-next");
@@ -1549,6 +1586,13 @@ const MU = {
     const active=document.getElementById("proBg"+this.proBgActive);
     const nextKey=this.proBgActive==="A"?"B":"A";
     const next=document.getElementById("proBg"+nextKey);
+    frame.classList.remove("visible");
+    btn.classList.remove("show");
+    btn.classList.toggle("invite",this.proIdx===CONFIG.prologue.length-1);
+    document.getElementById("proNext").innerHTML=
+      this.proIdx===CONFIG.prologue.length-1 ? "收下邀請函&nbsp; ▸" : "C O N T I N U E&nbsp; ▸";
+    await this.ensurePrologueImage(bg);
+    if(token!==this.proRenderToken)return;
     next.style.backgroundImage=
       `linear-gradient(180deg,rgba(222,214,198,.14),rgba(228,220,203,.18)),url("${bg}")`;
     next.classList.add("visible");
@@ -1556,17 +1600,14 @@ const MU = {
     this.proBgActive=nextKey;
     document.getElementById("proCounter").textContent=
       "PROLOGUE · "+String(this.proIdx+1).padStart(2,"0");
-    frame.classList.remove("visible");
-    btn.classList.remove("show");
-    btn.classList.toggle("invite",this.proIdx===CONFIG.prologue.length-1);
-    document.getElementById("proNext").innerHTML=
-      this.proIdx===CONFIG.prologue.length-1 ? "收下邀請函&nbsp; ▸" : "C O N T I N U E&nbsp; ▸";
     setTimeout(()=>{
+      if(token!==this.proRenderToken)return;
       let html="";
       if(f.en) html+=`<p class="pq-en">${this.lineify(f.en)}</p>`;
       if(f.zh) html+=`<p${f.en?' style="margin-top:30px;"':''}>${this.lineify(f.zh)}</p>`;
       frame.innerHTML=html;
       requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        if(token!==this.proRenderToken)return;
         frame.classList.add("visible");
         setTimeout(()=>btn.classList.add("show"),950+frame.querySelectorAll(".line").length*90);
       }));
@@ -2165,6 +2206,7 @@ const MU = {
     this.sound.init();
     this.buildG1();this.buildG2();this.buildG3();this.buildShop();
     this.buildFragments();this.buildSoundRoom();this.initDust();
+    this.preloadPrologueImages();
     this.renderPrologue();
     document.getElementById("proNext").onclick=()=>this.proNext();
     const env=document.getElementById("invEnvelope");
