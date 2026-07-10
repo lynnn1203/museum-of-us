@@ -1303,9 +1303,9 @@ const CONFIG = {
   ],
   shopBellPoint: {x:77.45, y:54.73},
   rooms: {
-    1:{num:"Gallery I", name:"Firsts", zh:"", desc:"Every beginning deserves to be remembered."},
-    2:{num:"Gallery II", name:"Fragments", zh:"", desc:"Every memory was once just a fragment."},
-    3:{num:"Gallery III", name:"Echoes", zh:"", desc:"Some memories can only be heard."},
+    1:{num:"Gallery I", name:"Firsts", zh:"", desc:"最易被遺忘，最值得珍藏。"},
+    2:{num:"Gallery II", name:"Fragments", zh:"", desc:"每份記憶皆因精心拼湊而完整。"},
+    3:{num:"Gallery III", name:"Echoes", zh:"", desc:"有些記憶，聲音比影像更鮮明。"},
     shop:{num:"Souvenir", name:"Shop", zh:"紀念品商店", desc:"參觀所有展區後，商店將為你開放。"},
   },
   stamps:{
@@ -1438,8 +1438,14 @@ const MU = {
       this.ambientGain=gain;
     },
     duck(on=true){
-      if(!this.ambientGain||this.muted)return;
-      this.ramp(this.ambientGain.gain,on ? .004 : .018,.45);
+      if(this.muted)return;
+      if(this.ambientGain)this.ramp(this.ambientGain.gain,on ? .004 : .018,.45);
+      // 媒體播放（G3 觸點 mp3／影片、modal 影片）期間，一併把背景音樂壓到近乎無聲，
+      // 讓音量本來就小的 mp3 也聽得見；播完由既有的 duck(false) 自動還原。
+      if(this.bgMusic){
+        clearTimeout(this.bgDuckTimer);   // 取消 duckBgMusic 的自動恢復計時，改由 duck 手動 hold
+        this.bgMusic.volume = on ? .012 : .08;
+      }
     },
     duckBgMusic(){
       if(!this.bgMusic||this.muted)return;
